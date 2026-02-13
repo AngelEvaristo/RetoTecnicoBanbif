@@ -75,7 +75,12 @@ jobs:
           cd infra      
           terraform plan -out=tfplan
 
-      - name: Terraform Apply
+      - name: Terraform Destroy
         run: |
           cd infra      
-          terraform apply -auto-approve tfplan
+          terraform destroy -auto-approve tfplan
+
+      # - name: Terraform Apply
+      #   run: |
+      #     cd infra      
+      #     terraform apply -auto-approve tfplan
