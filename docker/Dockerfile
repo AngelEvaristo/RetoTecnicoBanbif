@@ -19,7 +19,7 @@ RUN mvn clean package -DskipTests
 # ========================
 # 2. Runtime stage
 # ========================
-FROM mcr.microsoft.com/openjdk/jdk:17-ubuntu AS production
+FROM eclipse-temurin:17-jre-alpine AS production
 
 # Directorio de trabajo
 WORKDIR /app
@@ -31,4 +31,4 @@ COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 
 # Comando de arranque
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
