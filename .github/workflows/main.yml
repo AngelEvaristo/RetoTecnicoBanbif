@@ -16,6 +16,7 @@ jobs:
       - name: Get version from changelog
         id: get_version
         run: |
+          cd docker
           VERSION=$(grep -m1 -oP '(?<=## \[)[0-9]+\.[0-9]+\.[0-9]+' CHANGELOG.md)
           echo "Version found: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
@@ -50,5 +51,6 @@ jobs:
           ECR_REPOSITORY: retotecnicobanbif
           IMAGE_TAG: ${{ needs.extract-version.outputs.app_version }}
         run: |
+          cd docker
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
