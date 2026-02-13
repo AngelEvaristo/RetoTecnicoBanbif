@@ -11,7 +11,7 @@ public class DemoApplication {
 
 	@GetMapping("/weatherForecast")
 	public String getMessage() {
-		return "Today is a great sunny day for a Java service";
+		return "Hola mundo, esta es una prueba de despliegue en AWS ECR con GitHub Actions";
 	}
 
 	public static void main(String[] args) {
