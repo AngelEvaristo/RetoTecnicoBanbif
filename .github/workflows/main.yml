@@ -55,6 +55,15 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
+      - name: test print version
+        run: |
+          cd docker
+          docker build -t demo-spring .
+          sleep 10
+          docker image ls -a
+          docker run -d -p 8080:8080 demo-spring
+          curl http://localhost:8080
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -78,7 +87,7 @@ jobs:
       - name: Terraform Destroy
         run: |
           cd infra      
-          terraform destroy -auto-approve tfplan
+          terraform destroy -auto-approve
 
       # - name: Terraform Apply
       #   run: |
