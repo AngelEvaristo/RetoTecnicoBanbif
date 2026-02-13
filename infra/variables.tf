@@ -5,7 +5,7 @@ variable "image_tag" { type = string }
 
 variable "container_port" {
   type    = number
-  default = 3000
+  default = 8081
 }
 
 variable "cpu" {
