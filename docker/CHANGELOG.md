@@ -1,4 +1,4 @@
 # Changelog
 
-## [1.2.3] - 2025-08-14
+## [1.0.0] - 2025-08-14
 - Se agregó nueva funcionalidad
