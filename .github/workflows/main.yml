@@ -44,6 +44,23 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Validacion previa ECR
+        run: |
+          cd docker
+          docker build -t mi-app:1.0 . 
+          sleep 20
+          docker images
+          echo -e "\e[32mBuild componente\e[0m"
+          docker run -d --name mi-contenedor -p 8081:8081 -e SERVER_ADDRESS=0.0.0.0 mi-app:1.0
+          echo -e "\e[32mBuild componente\e[0m"
+          docker ps -a
+          sleep 20
+          echo -e "\e[32mBuild componente\e[0m"
+          docker ps
+          echo -e "\e[32mLOGS\e[0m"      
+          docker logs mi-contenedor                  
+          curl http://localhost:8081/weatherForecast
+
       - name: Build, Tag, and Push the Image to Amazon ECR
         id: build-image
         env:
@@ -54,23 +71,6 @@ jobs:
           cd docker
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-      - name: Validacion previa ECR
-        run: |
-          cd docker
-          docker build -t mi-app:1.0 . 
-          sleep 20
-          docker images
-          echo -e "\e[32mBuild componente\e[0m"
-          docker run -d --name mi-contenedor -p 8081:8081 -e SERVER_ADDRESS=0.0.0.0 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo -e "\e[32mBuild componente\e[0m"
-          docker ps -a
-          sleep 20
-          echo -e "\e[32mBuild componente\e[0m"
-          docker ps
-          echo -e "\e[32mLOGS\e[0m"      
-          docker logs mi-contenedor                  
-          curl http://localhost:8081/weatherForecast
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
