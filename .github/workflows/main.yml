@@ -60,7 +60,9 @@ jobs:
           cd docker
           docker build -t demo-spring .
           sleep 10
+          docker ps
           docker image ls -a
+          echo "docker run -d -p 8080:8080 demo-spring"
           docker run -d -p 8080:8080 demo-spring
           curl http://localhost:8080
 
