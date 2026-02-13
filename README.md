@@ -47,8 +47,55 @@ Este archivo define un flujo de trabajo automatizado para construir, validar y d
 
 ---
 
+## Recursos Aprovisionados Necesarios
+
+Antes de ejecutar el flujo de trabajo, asegúrate de que los siguientes recursos estén aprovisionados en AWS:
+
+### 1. **Repositorio de ECR**
+- **Nombre**: `retotecnicobanbif`
+- **Región**: `us-east-2`
+- **Descripción**: Este repositorio almacenará las imágenes Docker de la aplicación.
+
+### 2. **Bucket de S3 para el estado de Terraform**
+- **Nombre**: `terraform-state-rto`
+- **Ruta del estado**: `ecs/demo-ecs-dev/terraform.tfstate`
+- **Descripción**: Este bucket almacenará el archivo de estado remoto de Terraform.
+
+### 3. **Roles de IAM**
+- **Descripción**: Asegúrate de que existan roles de IAM con los permisos necesarios para ECS, ECR y S3.
+
+---
+
 ## Validación Previa de Docker
 
 - Construye la imagen Docker localmente:
   ```bash
   docker build -t mi-app:1.0 .
+  ```
+
+---
+
+## Validación del Despliegue en ECS
+
+Una vez que el flujo de trabajo haya completado el despliegue, sigue estos pasos para validar que la aplicación esté funcionando correctamente en ECS:
+
+### 1. **Verificar el estado de las tareas en ECS**
+- Accede a la consola de AWS ECS.
+- Navega al cluster `demo-ecs-cluster`.
+- Asegúrate de que las tareas estén en estado `RUNNING`.
+
+### 2. **Obtener la URL del balanceador de carga**
+- Accede a la consola de AWS EC2.
+- Navega a la sección de balanceadores de carga.
+- Busca el balanceador asociado al servicio de ECS y copia su DNS público.
+
+### 3. **Probar la aplicación**
+- Abre un navegador o usa `curl` para acceder a la URL del balanceador de carga:
+  ```bash
+  curl http://<IP_PUBLICA>:8081/weatherForecast
+  ```
+- Deberías recibir una respuesta válida de la aplicación.
+
+### 4. **Revisar logs de la tarea**
+- En la consola de AWS ECS, selecciona la tarea en ejecución.
+- Haz clic en la pestaña `Logs` para revisar los registros de la aplicación y verificar que no haya errores.
