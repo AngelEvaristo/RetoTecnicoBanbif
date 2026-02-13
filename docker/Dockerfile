@@ -19,16 +19,16 @@ RUN mvn clean package -DskipTests
 # ========================
 # 2. Runtime stage
 # ========================
-FROM eclipse-temurin:17-jre-alpine AS production
+FROM mcr.microsoft.com/openjdk/jdk:17-ubuntu AS production
 
 # Directorio de trabajo
 WORKDIR /app
 
 # Copiar solo el jar desde el build stage
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/spring-boot-docker.jar app.jar
 
 # Exponer el puerto de Spring Boot
-EXPOSE 8080
+EXPOSE 8081
 
 # Comando de arranque
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

@@ -59,12 +59,14 @@ jobs:
         run: |
           cd docker
           docker build -t demo-spring .
-          sleep 10
+          sleep 20
           docker ps
           docker image ls -a
           echo "docker run -d -p 8080:8080 demo-spring"
-          docker run -d -p 8080:8080 demo-spring
-          curl http://localhost:8080
+          docker ps
+          echo -e "\e[32mLOGS\e[0m"      
+          docker logs demo-spring                  
+          curl http://localhost:8081/weatherForecast
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
